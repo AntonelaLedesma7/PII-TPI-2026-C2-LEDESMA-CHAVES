@@ -35,7 +35,15 @@ public class PeriodoInactividad {
 		
 		return despuesDeInicio && antesDeFin;
 	}
-
+	
+	public LocalDateTime getFechaHoraInicio() {
+		return fechaHoraInicio;
+	}
+	
+	public LocalDateTime getFechaHoraFin() {
+		return fechaHoraFin;
+	}
+	
 	@Override
 	public String toString() {
 		return String.format("{%s a %s}", fechaHoraInicio.toString(), fechaHoraFin.toString());
