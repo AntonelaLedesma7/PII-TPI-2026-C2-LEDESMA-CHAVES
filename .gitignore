@@ -27,3 +27,4 @@ replay_pid*
 #Metadatos de Eclipce
 .classpath
 .project
+.settings/
