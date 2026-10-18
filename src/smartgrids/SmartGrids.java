@@ -164,7 +164,7 @@ public class SmartGrids implements ISmartGrids {
 
 	@Override
 	public boolean estaActiva(String nombre) {
-		return false;
+		return validarYObtenerPlanta(nombre).estaActiva();
 	}
 	
 
@@ -234,7 +234,14 @@ public class SmartGrids implements ISmartGrids {
 
 	@Override
 	public int[] incidenciasPorHora(String nombre) {
-		return null;
+	    Planta planta = validarYObtenerPlanta(nombre);
+	    int[] arregloIncidencias = new int[24];
+	    for (RegistroMonitoreo registro : planta.getRegistrosMonitoreo()) {
+	        int cantIncidencias = registro.getCantIncidencias();
+	        int hora = registro.getFechaHoraRegistro().getHour();
+	        arregloIncidencias[hora] += cantIncidencias;
+	    }
+	    return arregloIncidencias;
 	}
 
 	@Override
