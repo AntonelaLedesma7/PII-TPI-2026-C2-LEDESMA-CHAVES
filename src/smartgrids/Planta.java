@@ -15,7 +15,6 @@ public abstract class Planta {
 	private LinkedList<RegistroMonitoreo> registrosMonitoreo;
 	private LinkedList<PeriodoInactividad> periodosInactividad;
 	
-	
 	public Planta(String nombre, String direccion, double capacidadMax, LocalDateTime fechaHoraIniciacion) {
 		if(nombre == null || nombre.trim().isEmpty()) {
 			throw new RuntimeException("El nombre de la planta no puede ser nulo ni vacío.");
@@ -35,57 +34,67 @@ public abstract class Planta {
 		this.capacidadMax = capacidadMax;
 		this.activa = true;
 		this.fechaHoraIniciacion = fechaHoraIniciacion;
+		this.registrosMonitoreo = new LinkedList<>();
+		this.periodosInactividad = new LinkedList<>();
 	}
 	
 	public boolean estaActiva() {
 		return activa;
 	}
 	
-	
 	public void cambiarEstado(boolean estado) {
 		this.activa = estado;
 	}
-	
 	
 	public LinkedList<RegistroMonitoreo> getRegistrosMonitoreo() {
 		return registrosMonitoreo;
 	}
 	
-	
 	public void agregarRegistroMonitoreo(RegistroMonitoreo registro) {
-		registrosMonitoreo.add(registro);
+		if (registro == null) { 
+			throw new RuntimeException("El registro de monitoreo no puede ser nulo."); 
+		} 
+		
+		if (!estaActiva()) {
+			throw new RuntimeException("No se pueden registrar datos de monitoreo en una planta inactiva.");
+		} 
+		
+		if(registro.getFechaHoraRegistro().isBefore(this.fechaHoraIniciacion)) {			
+			throw new RuntimeException("La fecha del registro no puede ser anterior a la puesta en marcha de la planta.");
+		}
+		
+		for (RegistroMonitoreo reg : registrosMonitoreo) {
+			if(reg.getFechaHoraRegistro().equals(registro.getFechaHoraRegistro())) {
+				throw new RuntimeException("Ya existe un registro de monitoreo para la fecha y hora: " + registro.getFechaHoraRegistro());
+			}
+		}
+		
+		this.registrosMonitoreo.add(registro);
 	}
-	
 	
 	public LinkedList<PeriodoInactividad> getPeriodosInactividad() {
 		return periodosInactividad;
 	}
 	
-	
 	public void agregarPeriodoInactividad(PeriodoInactividad periodo) {
 		periodosInactividad.add(periodo);
 	}
-	
 	
 	public int getId() {
 		return id;
 	}
 	
-	
 	public String getNombre() {
 		return nombre;
 	}
-	
 	
 	public String getDireccion() {
 		return direccion;
 	}
 	
-	
 	public double getCapacidadMax() {
 		return capacidadMax;
 	}
-	
 	
 	public LocalDateTime getFechaHoraIniciacion() {
 		return fechaHoraIniciacion;
