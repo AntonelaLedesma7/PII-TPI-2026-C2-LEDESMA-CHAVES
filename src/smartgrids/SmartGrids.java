@@ -100,7 +100,6 @@ public class SmartGrids implements ISmartGrids {
 		
 		plantas.put(nombre, hidraulica);
 	}
-	
 
 	@Override
 	public void registrarPlantaTermica(String nombre, String direccion, double capacidadMaxima,
@@ -150,22 +149,78 @@ public class SmartGrids implements ISmartGrids {
 	public boolean estaActiva(String nombre) {
 		return false;
 	}
+	
+	private Planta validarPlanta(String nombre) {
+		if(nombre == null || nombre.trim().isEmpty()) {
+			throw new RuntimeException("El nombre de la planta no puede ser nulo ni estar vacío.");
+		}
+		
+		Planta planta = this.plantas.get(nombre);
+		
+		if(planta == null) {
+			throw new RuntimeException("No existe ninguna planta registrada con el nombre: " + nombre);
+		}
+		return planta;
+	}
 
 	@Override
 	public void registrarMonitoreo(String nombre, String fechaHora, double energiaGenerada, int incidencias) {
-
+		Planta planta = validarPlanta(nombre);
+		
+		if(planta instanceof PlantaEolica || planta instanceof PlantaTermica) {
+			throw new RuntimeException("La Planta" + nombre + "requiere un registro específico de su tipo.");
+		}
+		
+		LocalDateTime fechaHoraRegistro = parsearFechaHora(fechaHora);
+		RegistroMonitoreo registro = new RegistroMonitoreo(
+				nombre,
+				fechaHoraRegistro,
+				energiaGenerada,
+				incidencias);
+		
+		planta.agregarRegistroMonitoreo(registro);
 	}
 
 	@Override
 	public void registrarMonitoreo(String nombre, String fechaHora, double energiaGenerada, int incidencias,
 			double velocidadViento) {
+		Planta planta = validarPlanta(nombre);
+		
+		if(!(planta instanceof PlantaEolica)) {
+			throw new RuntimeException("No se puede registrar velocidad del viento en una planta que no es eólica: " + nombre);
+		}
+		
+		LocalDateTime fechaHoraRegistro = parsearFechaHora(fechaHora);
+		RegistroEolico registro = new RegistroEolico(
+				nombre,
+				fechaHoraRegistro,
+				energiaGenerada,
+				incidencias,
+				velocidadViento);
 
+		planta.agregarRegistroMonitoreo(registro);
 	}
 
 	@Override
 	public void registrarMonitoreo(String nombre, String fechaHora, double energiaGenerada, int incidencias,
 			double co2Emitido, double combustibleUtilizado) {
-}
+		Planta planta = validarPlanta(nombre);
+		
+		if(!(planta instanceof PlantaTermica)) {
+			throw new RuntimeException("No se pueden registrar emisiones de Co2 y combustible en una planta que no es térmica: " + nombre);
+		}
+		
+		LocalDateTime fechaHoraRegistro = parsearFechaHora(fechaHora);
+		RegistroTermico registro = new RegistroTermico(
+				nombre,
+				fechaHoraRegistro,
+				energiaGenerada,
+				incidencias,
+				co2Emitido,
+				combustibleUtilizado);
+		
+		planta.agregarRegistroMonitoreo(registro);
+	}
 
 	@Override
 	public double totalGenerado(String nombre) {
