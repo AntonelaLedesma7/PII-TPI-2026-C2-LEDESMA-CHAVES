@@ -57,6 +57,12 @@ public class RegistroMonitoreo {
 	
 	@Override
 	public String toString() {
-		return String.format("Registro #%d%n[Planta: %s, | Fecha y hora de registro: %s]%nEnergía Generada: %.2f MWh | Incidencias: %d", id, nombrePlanta, fechaHoraRegistro.toString(), energiaGenerada, cantIncidencias);
+		return String.format(
+				"Registro #%d%n[Planta: %s, | Fecha y hora de registro: %s]%nEnergía Generada: %.2f MWh | Incidencias: %d",
+				id,
+				nombrePlanta,
+				fechaHoraRegistro.toString(),
+				energiaGenerada,
+				cantIncidencias);
 	}
 }
