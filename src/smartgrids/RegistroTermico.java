@@ -32,6 +32,9 @@ public class RegistroTermico extends RegistroMonitoreo {
 	
 	@Override
 	public String toString() {
-		return String.format("%s | CO2: %.2f Kg | Combustible utilizado: %.2f L", super.toString(), co2Emitido, combustibleUtilizado);
+		return String.format("%s | CO2: %.2f Kg | Combustible utilizado: %.2f L",
+				super.toString(),
+				co2Emitido,
+				combustibleUtilizado);
 	}
 }

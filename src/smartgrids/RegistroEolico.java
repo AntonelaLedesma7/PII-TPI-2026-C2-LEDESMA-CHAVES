@@ -22,7 +22,9 @@ public class RegistroEolico extends RegistroMonitoreo{
 	
 	@Override
 	public String toString() {
-		return String.format("%s | Viento: %.2f m/s", super.toString(), velocidadVientoPromedio);
+		return String.format("%s | Viento: %.2f m/s",
+				super.toString(),
+				velocidadVientoPromedio);
 	}
 	
 }
