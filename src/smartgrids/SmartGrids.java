@@ -35,6 +35,19 @@ public class SmartGrids implements ISmartGrids {
 		}
 	}
 
+	private Planta validarYObtenerPlanta(String nombre) {
+		if(nombre == null || nombre.trim().isEmpty()) {
+			throw new RuntimeException("El nombre de la planta no puede ser nulo ni estar vacío.");
+		}
+		
+		Planta planta = this.plantas.get(nombre);
+		
+		if(planta == null) {
+			throw new RuntimeException("No existe ninguna planta registrada con el nombre: " + nombre);
+		}
+		return planta;
+	}
+	
 	@Override
 	public void registrarPlantaSolar(String nombre, String direccion, double capacidadMaxima,
 			String fechaHoraPuestaEnFuncionamiento, String fuentePrimaria, double eficienciaPromedio,
@@ -137,12 +150,16 @@ public class SmartGrids implements ISmartGrids {
 
 	@Override
 	public void activarPlanta(String nombre, String fechaHora) {
-
+		Planta planta = validarYObtenerPlanta(nombre);
+		LocalDateTime fecha = parsearFechaHora(fechaHora);
+		planta.activar(fecha);
 	}
 
 	@Override
 	public void desactivarPlanta(String nombre, String fechaHora) {
-
+		Planta planta = validarYObtenerPlanta(nombre);
+		LocalDateTime fecha = parsearFechaHora(fechaHora);
+		planta.desactivar(fecha);
 	}
 
 	@Override
@@ -150,22 +167,10 @@ public class SmartGrids implements ISmartGrids {
 		return false;
 	}
 	
-	private Planta validarPlanta(String nombre) {
-		if(nombre == null || nombre.trim().isEmpty()) {
-			throw new RuntimeException("El nombre de la planta no puede ser nulo ni estar vacío.");
-		}
-		
-		Planta planta = this.plantas.get(nombre);
-		
-		if(planta == null) {
-			throw new RuntimeException("No existe ninguna planta registrada con el nombre: " + nombre);
-		}
-		return planta;
-	}
 
 	@Override
 	public void registrarMonitoreo(String nombre, String fechaHora, double energiaGenerada, int incidencias) {
-		Planta planta = validarPlanta(nombre);
+		Planta planta = validarYObtenerPlanta(nombre);
 		
 		if(planta instanceof PlantaEolica || planta instanceof PlantaTermica) {
 			throw new RuntimeException("La Planta" + nombre + "requiere un registro específico de su tipo.");
@@ -184,7 +189,7 @@ public class SmartGrids implements ISmartGrids {
 	@Override
 	public void registrarMonitoreo(String nombre, String fechaHora, double energiaGenerada, int incidencias,
 			double velocidadViento) {
-		Planta planta = validarPlanta(nombre);
+		Planta planta = validarYObtenerPlanta(nombre);
 		
 		if(!(planta instanceof PlantaEolica)) {
 			throw new RuntimeException("No se puede registrar velocidad del viento en una planta que no es eólica: " + nombre);
@@ -204,7 +209,7 @@ public class SmartGrids implements ISmartGrids {
 	@Override
 	public void registrarMonitoreo(String nombre, String fechaHora, double energiaGenerada, int incidencias,
 			double co2Emitido, double combustibleUtilizado) {
-		Planta planta = validarPlanta(nombre);
+		Planta planta = validarYObtenerPlanta(nombre);
 		
 		if(!(planta instanceof PlantaTermica)) {
 			throw new RuntimeException("No se pueden registrar emisiones de Co2 y combustible en una planta que no es térmica: " + nombre);
