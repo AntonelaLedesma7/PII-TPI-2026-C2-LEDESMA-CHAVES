@@ -17,8 +17,10 @@ public class PlantaTermica extends PlantaNoRenovable{
 	
 	@Override
 	public boolean cumplioCuota(RegistroMonitoreo registro) {
+		if(!(registro instanceof RegistroTermico)) {
+			return false;
+		}
 	    RegistroTermico rt = (RegistroTermico) registro;
-
 	    return rt.getEnergiaGenerada() >= capacidadMinimaCuota()
 	        && rt.getCo2Emitido() < getObjetivoEmisionCO2();
 	}
