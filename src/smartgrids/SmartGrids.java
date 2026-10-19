@@ -145,7 +145,8 @@ public class SmartGrids implements ISmartGrids {
 
 	@Override
 	public double capacidadMinimaCuota(String nombre) {
-		return 0;
+		Planta planta = validarYObtenerPlanta(nombre);
+		return planta.capacidadMinimaCuota();
 	}
 
 	@Override
@@ -167,7 +168,6 @@ public class SmartGrids implements ISmartGrids {
 		return validarYObtenerPlanta(nombre).estaActiva();
 	}
 	
-
 	@Override
 	public void registrarMonitoreo(String nombre, String fechaHora, double energiaGenerada, int incidencias) {
 		Planta planta = validarYObtenerPlanta(nombre);

@@ -28,6 +28,6 @@ public abstract class PlantaRenovable extends Planta {
 	
 	@Override
 	public double capacidadMinimaCuota() {
-	    return getCapacidadMax() * eficienciaPromedio;
+	    return getCapacidadMax() * getEficienciaPromedio();
 	}
 }
