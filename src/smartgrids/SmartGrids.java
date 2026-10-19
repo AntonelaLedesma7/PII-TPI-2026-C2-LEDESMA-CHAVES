@@ -1,5 +1,6 @@
 package smartgrids;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -247,7 +248,34 @@ public class SmartGrids implements ISmartGrids {
 
 	@Override
 	public int[] histogramaCumplimiento(String nombre, String fechaDesde, String fechaHasta) {
-		return null;
+		Planta planta = validarYObtenerPlanta(nombre);
+		
+		LocalDate desde;
+		LocalDate hasta;
+		
+		try {
+			desde = LocalDate.parse(fechaDesde);
+			hasta = LocalDate.parse(fechaHasta);
+		} catch (DateTimeParseException | NullPointerException e) {
+			throw new RuntimeException("El formato de las fechas debe ser aaaa-MM-dd", e);
+		}
+		if(desde.isAfter(hasta)) {
+			throw new RuntimeException("La fecha inicial (" + fechaDesde + ") no puede ser posterior a la fecha final (" + fechaHasta + ").");
+		}
+		
+		int[] histograma = new int[24];
+		
+		for(RegistroMonitoreo reg : planta.getRegistrosMonitoreo()) {
+			LocalDate fechaReg = reg.getFechaHoraRegistro().toLocalDate();
+			
+			if(!fechaReg.isBefore(desde) && !fechaReg.isAfter(hasta)) {
+				if(planta.cumplioCuota(reg)) {
+					int hora = reg.getFechaHoraRegistro().getHour();
+					histograma[hora]++;
+				}
+			}
+		}
+		return histograma;
 	}
 
 	@Override
