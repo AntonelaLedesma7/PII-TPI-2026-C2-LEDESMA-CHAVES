@@ -163,6 +163,14 @@ public abstract class Planta {
         }
         return registro.getEnergiaGenerada() >= capacidadMinimaCuota();
     }
+    
+    public double totalGenerado() {
+    	double total = 0.0;
+    	for(RegistroMonitoreo registro: registrosMonitoreo) {
+    		total += registro.getEnergiaGenerada();
+    	}
+    	return total;
+    }
 
     @Override
     public String toString() {

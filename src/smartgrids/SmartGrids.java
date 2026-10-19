@@ -229,7 +229,8 @@ public class SmartGrids implements ISmartGrids {
 
 	@Override
 	public double totalGenerado(String nombre) {
-		return 0;
+		Planta planta = validarYObtenerPlanta(nombre);
+		return planta.totalGenerado();
 	}
 
 	@Override
