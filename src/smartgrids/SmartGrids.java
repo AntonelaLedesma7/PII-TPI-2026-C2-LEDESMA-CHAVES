@@ -300,7 +300,15 @@ public class SmartGrids implements ISmartGrids {
 
 	@Override
 	public List<String> plantasOrdenadasPorEnergiaGenerada() {
-		return null;
+		List<Planta> listaPlantas = new ArrayList<>(this.plantas.values());
+		
+		listaPlantas.sort((p1,p2) -> Double.compare(p2.totalGenerado(), p1.totalGenerado()));
+		
+		List<String> plantasOrdenadas = new ArrayList<>();
+		for(Planta planta : listaPlantas) {
+			plantasOrdenadas.add(planta.getNombre() + ": " + planta.totalGenerado());
+		}
+		return plantasOrdenadas;
 	}
 
 	@Override
