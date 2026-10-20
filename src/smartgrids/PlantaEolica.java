@@ -46,5 +46,38 @@ public class PlantaEolica extends PlantaRenovable {
 		return velocidadMinNecesaria;
 	}
 	
-	
+
+	public String reporteHorasSinVelocidadMinima() {
+	    boolean[] tieneRegistros = new boolean[24];
+	    boolean[] alcanzoMinima = new boolean[24];
+	    double[] velocidadMaxima = new double[24];
+	    for (RegistroMonitoreo registro : getRegistrosMonitoreo()) {
+	        RegistroEolico registroEolico = (RegistroEolico) registro;
+	        int hora = registroEolico.getFechaHoraRegistro().getHour();
+	        double velocidad = registroEolico.getVelocidadVientoPromedio();
+	        tieneRegistros[hora] = true;
+	        if (velocidad >= velocidadMinNecesaria) {
+	            alcanzoMinima[hora] = true;
+	        }
+	        if (velocidad > velocidadMaxima[hora]) {
+	            velocidadMaxima[hora] = velocidad;
+	        }
+	    }
+	    StringBuilder reporte = new StringBuilder();
+	    reporte.append("- ")
+	    		.append(getNombre())
+	    		.append(": ")
+	    		.append(velocidadMinNecesaria)
+	    		.append(" m/s\n");
+	    for (int hora = 0; hora < 24; hora++) {
+	        if (tieneRegistros[hora] && !alcanzoMinima[hora]) {
+	            reporte.append(
+	                String.format("       %02d: %s m/s%n",
+	                    hora, velocidadMaxima[hora])
+	            );
+	        }
+	    }
+	    return reporte.toString();
+	}
+
 }

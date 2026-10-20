@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class SmartGrids implements ISmartGrids {
 	
@@ -280,23 +281,65 @@ public class SmartGrids implements ISmartGrids {
 
 	@Override
 	public Map<String, Integer> plantasRenovablesPorFuente() {
-		return null;
+	    Map<String, Integer> resultado = new TreeMap<>();
+	    for (Planta planta : plantas.values()) {
+	    	if (planta instanceof PlantaRenovable) {
+	    		PlantaRenovable renovable = (PlantaRenovable) planta;
+	            String fuente = renovable.getFuentePrimaria();
+	            if (resultado.containsKey(fuente)) {
+	            int cantidadActual = resultado.get(fuente);
+	                int nuevaCantidad = cantidadActual + 1;
+	                resultado.put(fuente, nuevaCantidad);
+	            } else {
+	                resultado.put(fuente, 1);
+	            }
+	        }
+	    }
+	    return resultado;
 	}
 
 	@Override
 	public List<String> plantasQueNuncaCumplieronCuota() {
-		return null;
+	    List<String> resultado = new ArrayList<>();
+	    for (Planta planta : plantas.values()) {
+	        boolean algunaCuotaCumplida = false;
+	        for (RegistroMonitoreo registro : planta.getRegistrosMonitoreo()) {
+	            if (planta.cumplioCuota(registro)) {
+	                algunaCuotaCumplida = true;
+	                break;
+	            }
+	        }
+	        if (!algunaCuotaCumplida) {
+	            resultado.add(planta.getNombre());
+	        }
+	    }
+	    return resultado;
 	}
+
 
 	@Override
 	public String horasSinVelocidadMinimaPorPlantaEolica() {
-		return null;
+	    StringBuilder resultado = new StringBuilder();
+	    resultado.append("Plantas Eolicas: Horas con poco viento\n");
+	    for (Planta planta : plantas.values()) {
+	        if (planta instanceof PlantaEolica) {
+	            PlantaEolica eolica = (PlantaEolica) planta;
+	            resultado.append(eolica.reporteHorasSinVelocidadMinima());
+	        }
+	    }
+	    return resultado.toString();
 	}
+
 
 	@Override
 	public int limpiarMonitoreosSinDatos() {
-		return 0;
+	    int totalEliminados = 0;
+	    for (Planta planta : plantas.values()) {
+	        totalEliminados += planta.limpiarRegistrosSinDatos();
+	    }
+	    return totalEliminados;
 	}
+
 
 	@Override
 	public List<String> plantasOrdenadasPorEnergiaGenerada() {
@@ -311,9 +354,17 @@ public class SmartGrids implements ISmartGrids {
 		return plantasOrdenadas;
 	}
 
+
 	@Override
 	public List<String> plantasInactivasEn(String fechaHora) {
-		return null;
+	    LocalDateTime fecha = parsearFechaHora(fechaHora);
+	    List<String> resultado = new ArrayList<>();
+	    for (Planta planta : plantas.values()) {
+	        if (planta.estuvoInactivaEn(fecha)) {
+	            resultado.add(planta.getNombre());
+	        }
+	    }
+	    return resultado;
 	}
 	
 	@Override
@@ -334,5 +385,6 @@ public class SmartGrids implements ISmartGrids {
 		
 		return sb.toString();
 	}
+
 
 }
