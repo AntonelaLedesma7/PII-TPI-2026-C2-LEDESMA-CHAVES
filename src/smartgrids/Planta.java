@@ -111,7 +111,7 @@ public abstract class Planta {
             throw new RuntimeException("El registro no puede ser nulo.");
         }
         if (!estaActiva()) {
-            throw new RuntimeException("No se puede registrar en una planta inactiva.");
+            throw new RuntimeException("No se puede agregar un registro de monitoreo en una planta inactiva.");
         }
         LocalDateTime fecha = registro.getFechaHoraRegistro();
         if (fecha == null) {

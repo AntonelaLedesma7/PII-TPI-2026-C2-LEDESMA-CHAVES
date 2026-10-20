@@ -233,7 +233,7 @@ public class SmartGrids implements ISmartGrids {
 		Planta planta = validarYObtenerPlanta(nombre);
 		return planta.totalGenerado();
 	}
-
+	
 	@Override
 	public int[] incidenciasPorHora(String nombre) {
 	    Planta planta = validarYObtenerPlanta(nombre);
@@ -314,6 +314,25 @@ public class SmartGrids implements ISmartGrids {
 	@Override
 	public List<String> plantasInactivasEn(String fechaHora) {
 		return null;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("--- SISTEMA SMARTGRIDS ---\n");
+		sb.append("Cantidad de plantas registradas: ").append(this.plantas.size()).append("\n");
+		
+		if (this.plantas.isEmpty()) {
+			sb.append("No hay plantas registradas en la red.");
+		} else {
+			sb.append("Listado de plantas: \n");
+			for(Planta planta: this.plantas.values()) {
+				sb.append(" - ").append(planta.toString()).append("\n");
+			}
+		}
+		
+		return sb.toString();
 	}
 
 }
