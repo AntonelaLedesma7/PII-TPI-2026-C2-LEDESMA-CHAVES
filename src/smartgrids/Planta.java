@@ -3,6 +3,7 @@ package smartgrids;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public abstract class Planta {
@@ -130,6 +131,22 @@ public abstract class Planta {
         }
         registrosMonitoreo.add(registro);
     }
+    
+
+	public int limpiarRegistrosSinDatos() {
+	    int eliminados = 0;
+	    Iterator<RegistroMonitoreo> iterador =
+	            registrosMonitoreo.iterator();
+	    while (iterador.hasNext()) {
+	        RegistroMonitoreo registro = iterador.next();
+	        if (registro.getEnergiaGenerada() == 0 && registro.getCantIncidencias() == 0) {
+	            iterador.remove();
+	            eliminados++;
+	        }
+	    }
+	    return eliminados;
+	}
+
 
     public LinkedList<RegistroMonitoreo> getRegistrosMonitoreo() {
         return new LinkedList<>(registrosMonitoreo);
