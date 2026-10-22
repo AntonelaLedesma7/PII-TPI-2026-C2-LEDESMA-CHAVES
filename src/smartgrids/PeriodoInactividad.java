@@ -21,10 +21,6 @@ public class PeriodoInactividad {
 		this.fechaHoraFin = fechaHoraFin;
 	}
 	
-	// Evalúa si una fecha y hora dada se encuenta dentro del periodo de inactividad.
-	// Recibe por parámetro fechaHora 
-	// Devuelve true si fechaHoraInicio <= fechaHora <= fechaHoraFin
-	
 	public boolean perteneceAPeriodoInactividad(LocalDateTime fechaHora) {
 		if(fechaHora == null) {
 			return false;
@@ -46,6 +42,8 @@ public class PeriodoInactividad {
 	
 	@Override
 	public String toString() {
-		return String.format("{%s a %s}", fechaHoraInicio.toString(), fechaHoraFin.toString());
+		return String.format("{%s a %s}", 
+				fechaHoraInicio.toString(), 
+				fechaHoraFin.toString());
 	}
 }

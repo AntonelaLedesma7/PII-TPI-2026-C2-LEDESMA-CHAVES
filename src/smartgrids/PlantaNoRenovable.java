@@ -9,7 +9,12 @@ public abstract class PlantaNoRenovable extends Planta {
 	
 	
 	public PlantaNoRenovable(String nombre, String direccion, double capacidadMax, LocalDateTime fechaHoraIniciacion, String tipoCombustible, double objetivoEmisionCO2, double capacidadAlmacenamientoCombustible) {
-		super(nombre, direccion, capacidadMax, fechaHoraIniciacion);
+		super(
+				nombre, 
+				direccion, 
+				capacidadMax, 
+				fechaHoraIniciacion);
+		
 		if(tipoCombustible == null || tipoCombustible.trim().isEmpty()) {
 			throw new RuntimeException("El campo tipo de combustible no puede ser nulo ni vacío.");
 		}
@@ -24,25 +29,19 @@ public abstract class PlantaNoRenovable extends Planta {
 		this.capacidadAlmacenamientoCombustible = capacidadAlmacenamientoCombustible;
 	}
 
-
 	public double getObjetivoEmisionCO2() {
 		return objetivoEmisionCO2;
 	}
-
 
 	public void setObjetivoEmisionCO2(double objetivoEmisionCO2) {
 		this.objetivoEmisionCO2 = objetivoEmisionCO2;
 	}
 
-
 	public String getTipoCombustible() {
 		return tipoCombustible;
 	}
 
-
 	public double getCapacidadAlmacenamientoCombustible() {
 		return capacidadAlmacenamientoCombustible;
-	}
-	
-	
+	}	
 }

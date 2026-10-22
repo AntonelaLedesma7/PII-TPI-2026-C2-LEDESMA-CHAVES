@@ -7,7 +7,12 @@ public abstract class PlantaRenovable extends Planta {
 	private final double eficienciaPromedio;
 	
 	public PlantaRenovable(String nombre, String direccion, double capacidadMax, LocalDateTime fechaHoraIniciacion, String fuentePrimaria, double eficienciaPromedio) {
-		super(nombre, direccion, capacidadMax, fechaHoraIniciacion);
+		super(
+				nombre,
+				direccion, 
+				capacidadMax, 
+				fechaHoraIniciacion);
+	
 		if(fuentePrimaria == null || fuentePrimaria.trim().isEmpty()) {
 			throw new RuntimeException("El campo fuente primaria no puede ser nulo ni vacío.");
 		}

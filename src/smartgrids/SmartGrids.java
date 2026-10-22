@@ -139,6 +139,7 @@ public class SmartGrids implements ISmartGrids {
 	@Override
 	public List<String> consultarPlantas() {
 		List<String> resultado = new ArrayList<>();
+		
 		for(Planta planta: plantas.values()) {
 			resultado.add(planta.toString());
 		}
@@ -175,7 +176,7 @@ public class SmartGrids implements ISmartGrids {
 		Planta planta = validarYObtenerPlanta(nombre);
 		
 		if(planta instanceof PlantaEolica || planta instanceof PlantaTermica) {
-			throw new RuntimeException("La Planta" + nombre + "requiere un registro específico de su tipo.");
+			throw new RuntimeException("La Planta " + nombre + " requiere un registro específico de su tipo.");
 		}
 		
 		LocalDateTime fechaHoraRegistro = parsearFechaHora(fechaHora);
@@ -238,7 +239,9 @@ public class SmartGrids implements ISmartGrids {
 	@Override
 	public int[] incidenciasPorHora(String nombre) {
 	    Planta planta = validarYObtenerPlanta(nombre);
+	    
 	    int[] arregloIncidencias = new int[24];
+	    
 	    for (RegistroMonitoreo registro : planta.getRegistrosMonitoreo()) {
 	        int cantIncidencias = registro.getCantIncidencias();
 	        int hora = registro.getFechaHoraRegistro().getHour();
@@ -258,7 +261,7 @@ public class SmartGrids implements ISmartGrids {
 			desde = LocalDate.parse(fechaDesde);
 			hasta = LocalDate.parse(fechaHasta);
 		} catch (DateTimeParseException | NullPointerException e) {
-			throw new RuntimeException("El formato de las fechas debe ser aaaa-MM-dd", e);
+			throw new RuntimeException("El formato de las fechas debe ser 'aaaa-MM-dd'.", e);
 		}
 		if(desde.isAfter(hasta)) {
 			throw new RuntimeException("La fecha inicial (" + fechaDesde + ") no puede ser posterior a la fecha final (" + fechaHasta + ").");
@@ -283,11 +286,14 @@ public class SmartGrids implements ISmartGrids {
 	public Map<String, Integer> plantasRenovablesPorFuente() {
 	    Map<String, Integer> resultado = new TreeMap<>();
 	    for (Planta planta : plantas.values()) {
+	    
 	    	if (planta instanceof PlantaRenovable) {
 	    		PlantaRenovable renovable = (PlantaRenovable) planta;
-	            String fuente = renovable.getFuentePrimaria();
-	            if (resultado.containsKey(fuente)) {
-	            int cantidadActual = resultado.get(fuente);
+	 
+	    		String fuente = renovable.getFuentePrimaria();
+	            
+	    		if (resultado.containsKey(fuente)) {
+	    			int cantidadActual = resultado.get(fuente);
 	                int nuevaCantidad = cantidadActual + 1;
 	                resultado.put(fuente, nuevaCantidad);
 	            } else {
@@ -301,8 +307,10 @@ public class SmartGrids implements ISmartGrids {
 	@Override
 	public List<String> plantasQueNuncaCumplieronCuota() {
 	    List<String> resultado = new ArrayList<>();
+	    
 	    for (Planta planta : plantas.values()) {
 	        boolean algunaCuotaCumplida = false;
+	        
 	        for (RegistroMonitoreo registro : planta.getRegistrosMonitoreo()) {
 	            if (planta.cumplioCuota(registro)) {
 	                algunaCuotaCumplida = true;
@@ -316,11 +324,12 @@ public class SmartGrids implements ISmartGrids {
 	    return resultado;
 	}
 
-
 	@Override
 	public String horasSinVelocidadMinimaPorPlantaEolica() {
 	    StringBuilder resultado = new StringBuilder();
+	    
 	    resultado.append("Plantas Eolicas: Horas con poco viento\n");
+	    
 	    for (Planta planta : plantas.values()) {
 	        if (planta instanceof PlantaEolica) {
 	            PlantaEolica eolica = (PlantaEolica) planta;
@@ -330,16 +339,15 @@ public class SmartGrids implements ISmartGrids {
 	    return resultado.toString();
 	}
 
-
 	@Override
 	public int limpiarMonitoreosSinDatos() {
 	    int totalEliminados = 0;
+
 	    for (Planta planta : plantas.values()) {
 	        totalEliminados += planta.limpiarRegistrosSinDatos();
 	    }
 	    return totalEliminados;
 	}
-
 
 	@Override
 	public List<String> plantasOrdenadasPorEnergiaGenerada() {
@@ -357,9 +365,11 @@ public class SmartGrids implements ISmartGrids {
 
 	@Override
 	public List<String> plantasInactivasEn(String fechaHora) {
-	    LocalDateTime fecha = parsearFechaHora(fechaHora);
-	    List<String> resultado = new ArrayList<>();
-	    for (Planta planta : plantas.values()) {
+		LocalDateTime fecha = parsearFechaHora(fechaHora);
+	    
+		List<String> resultado = new ArrayList<>();
+	    
+		for (Planta planta : plantas.values()) {
 	        if (planta.estuvoInactivaEn(fecha)) {
 	            resultado.add(planta.getNombre());
 	        }
@@ -382,9 +392,6 @@ public class SmartGrids implements ISmartGrids {
 				sb.append(" - ").append(planta.toString()).append("\n");
 			}
 		}
-		
 		return sb.toString();
 	}
-
-
 }

@@ -8,7 +8,14 @@ public class PlantaSolar extends PlantaRenovable {
 	private double horasRadiacion;
 		
 	public PlantaSolar(String nombre, String direccion, double capacidadMax, LocalDateTime fechaHoraIniciacion, String fuentePrimaria, double eficienciaPromedio, double superficieCubierta, int cantidadPaneles, double horasRadiacion) {
-		super(nombre, direccion, capacidadMax, fechaHoraIniciacion, fuentePrimaria, eficienciaPromedio);
+		super(
+				nombre,
+				direccion,
+				capacidadMax, 
+				fechaHoraIniciacion, 
+				fuentePrimaria, 
+				eficienciaPromedio);
+		
 		if(superficieCubierta <= 0) {
 			throw new RuntimeException("La superficie cubierta no puede ser negativa o igual a cero.");
 		}
@@ -18,6 +25,7 @@ public class PlantaSolar extends PlantaRenovable {
 		if(horasRadiacion < 0 || horasRadiacion > 24) {
 			throw new RuntimeException("Las horas de radiacion diarias no pueden ser negativas ni superar las 24hs.");
 		}
+		
 		this.superficieCubierta = superficieCubierta;
 		this.cantidadPaneles = cantidadPaneles;
 		this.horasRadiacion = horasRadiacion;

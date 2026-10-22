@@ -67,9 +67,11 @@ public abstract class Planta {
 
     public void desactivar(LocalDateTime fechaHora) {
         validarFechaCambioEstado(fechaHora);
+
         if (!activa) {
             throw new RuntimeException("La planta ya esta inactiva.");
         }
+        
         inicioInactividadActual = fechaHora;
         ultimoCambioEstado = fechaHora;
         activa = false;
@@ -81,7 +83,9 @@ public abstract class Planta {
         if (activa) {
             throw new RuntimeException("La planta ya esta activa.");
         }
+        
         PeriodoInactividad periodo = new PeriodoInactividad(inicioInactividadActual,fechaHora);
+        
         periodosInactividad.add(periodo);
         inicioInactividadActual = null;
         ultimoCambioEstado = fechaHora;
@@ -92,11 +96,13 @@ public abstract class Planta {
         if (fechaHora == null) {
             throw new RuntimeException("La fecha no puede ser nula.");
         }
+        
         for (PeriodoInactividad periodo : periodosInactividad) {
             if (periodo.perteneceAPeriodoInactividad(fechaHora)) {
                 return true;
             }
         }
+        
         if (!activa && inicioInactividadActual != null) {
             return !fechaHora.isBefore(inicioInactividadActual);
         }
@@ -135,10 +141,12 @@ public abstract class Planta {
 
 	public int limpiarRegistrosSinDatos() {
 	    int eliminados = 0;
-	    Iterator<RegistroMonitoreo> iterador =
-	            registrosMonitoreo.iterator();
+	    
+	    Iterator<RegistroMonitoreo> iterador = registrosMonitoreo.iterator();
+	    
 	    while (iterador.hasNext()) {
 	        RegistroMonitoreo registro = iterador.next();
+	    
 	        if (registro.getEnergiaGenerada() == 0 && registro.getCantIncidencias() == 0) {
 	            iterador.remove();
 	            eliminados++;
@@ -146,7 +154,6 @@ public abstract class Planta {
 	    }
 	    return eliminados;
 	}
-
 
     public LinkedList<RegistroMonitoreo> getRegistrosMonitoreo() {
         return new LinkedList<>(registrosMonitoreo);
@@ -183,6 +190,7 @@ public abstract class Planta {
     
     public double totalGenerado() {
     	double total = 0.0;
+
     	for(RegistroMonitoreo registro: registrosMonitoreo) {
     		total += registro.getEnergiaGenerada();
     	}
@@ -192,14 +200,17 @@ public abstract class Planta {
     @Override
     public String toString() {
         String estado;
+        
         if (activa) {
             estado = "ACTIVA";
         } else {
             estado = "INACTIVA";
         }
+        
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-        return String.format("%s (%s): %s", nombre, estado, fechaHoraIniciacion.format(formato)
-        );
+        return String.format("%s (%s): %s", 
+        		nombre,
+        		estado, 
+        		fechaHoraIniciacion.format(formato));
     }
 }
- 

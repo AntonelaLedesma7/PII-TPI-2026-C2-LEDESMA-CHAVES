@@ -7,7 +7,11 @@ public class RegistroEolico extends RegistroMonitoreo{
 
 	public RegistroEolico(String nombrePlanta, LocalDateTime fechaHoraRegistro, double energiaGenerada,
 			int cantIncidencias, double velocidadVientoPromedio) {
-		super(nombrePlanta, fechaHoraRegistro, energiaGenerada, cantIncidencias);
+		super(
+				nombrePlanta,
+				fechaHoraRegistro,
+				energiaGenerada,
+				cantIncidencias);
 		
 		if(velocidadVientoPromedio < 0) {
 			throw new RuntimeException("La velocidad del viento promedio no puede ser negativa.");
@@ -26,5 +30,4 @@ public class RegistroEolico extends RegistroMonitoreo{
 				super.toString(),
 				velocidadVientoPromedio);
 	}
-	
 }
