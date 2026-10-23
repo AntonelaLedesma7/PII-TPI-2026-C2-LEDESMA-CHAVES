@@ -23,8 +23,3 @@
 hs_err_pid*
 replay_pid*
 /bin/
-
-#Metadatos de Eclipce
-.classpath
-.project
-.settings/
