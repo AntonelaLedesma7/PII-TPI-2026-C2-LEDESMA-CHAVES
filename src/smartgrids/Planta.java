@@ -197,20 +197,22 @@ public abstract class Planta {
     	return total;
     }
 
+    public String resumenConsulta() {
+        DateTimeFormatter formato =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+
+        String estado = activa ? "ACTIVA" : "INACTIVA";
+
+        return String.format(
+                "%s (%s): %s",
+                nombre,
+                estado,
+                fechaHoraIniciacion.format(formato)
+        );
+    }
+    
     @Override
     public String toString() {
-        String estado;
-        
-        if (activa) {
-            estado = "ACTIVA";
-        } else {
-            estado = "INACTIVA";
-        }
-        
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-        return String.format("%s (%s): %s", 
-        		nombre,
-        		estado, 
-        		fechaHoraIniciacion.format(formato));
+        return resumenConsulta();
     }
 }

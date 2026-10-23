@@ -35,4 +35,14 @@ public abstract class PlantaRenovable extends Planta {
 	public double capacidadMinimaCuota() {
 	    return getCapacidadMax() * getEficienciaPromedio();
 	}
+	
+	@Override
+	public String toString() {
+	    return super.toString()
+	            + String.format(
+	                " | Fuente primaria: %s | Eficiencia promedio: %.2f",
+	                fuentePrimaria,
+	                eficienciaPromedio
+	            );
+	}
 }

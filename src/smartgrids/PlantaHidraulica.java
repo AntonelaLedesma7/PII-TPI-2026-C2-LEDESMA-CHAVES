@@ -35,4 +35,14 @@ public class PlantaHidraulica extends PlantaRenovable{
 	public double getCapacidadEmbalse() {
 		return capacidadEmbalse;
 	}
+	
+	@Override
+	public String toString() {
+	    return super.toString()
+	            + String.format(
+	                " | Turbinas: %d | Capacidad embalse: %.2f",
+	                cantidadTurbinas,
+	                capacidadEmbalse
+	            );
+	}
 }

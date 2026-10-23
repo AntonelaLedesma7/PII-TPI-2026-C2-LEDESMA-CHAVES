@@ -87,4 +87,15 @@ public class PlantaEolica extends PlantaRenovable {
 	    }
 	    return reporte.toString();
 	}
+	
+	@Override
+	public String toString() {
+	    return super.toString()
+	            + String.format(
+	                " | Aerogeneradores: %d | Altura torres: %.2f | Velocidad minima: %.2f m/s",
+	                cantidadAerogeneradores,
+	                alturaTorres,
+	                velocidadMinNecesaria
+	            );
+	}
 }

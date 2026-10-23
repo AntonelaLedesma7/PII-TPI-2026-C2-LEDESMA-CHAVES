@@ -44,4 +44,15 @@ public abstract class PlantaNoRenovable extends Planta {
 	public double getCapacidadAlmacenamientoCombustible() {
 		return capacidadAlmacenamientoCombustible;
 	}	
+	
+	@Override
+	public String toString() {
+	    return super.toString()
+	            + String.format(
+	                " | Combustible: %s | Objetivo CO2: %.2f | Almacenamiento: %.2f",
+	                tipoCombustible,
+	                objetivoEmisionCO2,
+	                capacidadAlmacenamientoCombustible
+	            );
+	}
 }

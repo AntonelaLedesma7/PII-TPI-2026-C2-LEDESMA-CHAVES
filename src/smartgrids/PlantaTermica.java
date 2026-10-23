@@ -31,4 +31,9 @@ public class PlantaTermica extends PlantaNoRenovable{
 	    return rt.getEnergiaGenerada() >= capacidadMinimaCuota()
 	        && rt.getCo2Emitido() < getObjetivoEmisionCO2();
 	}
+	
+	@Override
+	public String toString() {
+	    return super.toString() + " | Tipo de planta: Termica";
+	}
 }

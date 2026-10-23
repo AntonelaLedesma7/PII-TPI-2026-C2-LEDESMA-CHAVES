@@ -55,4 +55,15 @@ public class PlantaSolar extends PlantaRenovable {
 	public double capacidadMinimaCuota() {
 	    return getCapacidadMax() * getEficienciaPromedio() * (this.horasRadiacion / 24.0);
 	}
+	
+	@Override
+	public String toString() {
+	    return super.toString()
+	            + String.format(
+	                " | Superficie cubierta: %.2f | Paneles: %d | Horas de radiacion: %.2f",
+	                superficieCubierta,
+	                cantidadPaneles,
+	                horasRadiacion
+	            );
+	}
 }

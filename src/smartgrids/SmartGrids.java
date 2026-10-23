@@ -141,7 +141,7 @@ public class SmartGrids implements ISmartGrids {
 		List<String> resultado = new ArrayList<>();
 		
 		for(Planta planta: plantas.values()) {
-			resultado.add(planta.toString());
+			resultado.add(planta.resumenConsulta());
 		}
 		return resultado;
 	}
